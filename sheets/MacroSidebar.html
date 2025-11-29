@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 10px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #357ae8;
+    }
+    .info {
+      font-size: 12px;
+      color: #666;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h3>Macro Economic Snapshot</h3>
+  <form id="macroForm">
+    <div class="form-group">
+      <label for="countries">Countries (comma-separated):</label>
+      <input type="text" id="countries" placeholder="e.g., United States, Germany" required>
+      <div class="info">Separate multiple countries with commas</div>
+    </div>
+    <div class="form-group">
+      <label for="metrics">Metrics (comma-separated):</label>
+      <input type="text" id="metrics" value="gdp,unemployment,cpi" required>
+      <div class="info">Options: gdp, unemployment, cpi, inflation</div>
+    </div>
+    <div class="form-group">
+      <label for="startYear">Start Year (optional):</label>
+      <input type="number" id="startYear" min="2000" max="2099">
+    </div>
+    <div class="form-group">
+      <label for="endYear">End Year (optional):</label>
+      <input type="number" id="endYear" min="2000" max="2099">
+    </div>
+    <button type="submit">Get Macro Snapshot</button>
+  </form>
+  
+  <div id="result" style="margin-top: 15px;"></div>
+
+  <script>
+    document.getElementById('macroForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const countries = document.getElementById('countries').value;
+      const metrics = document.getElementById('metrics').value;
+      const startYear = document.getElementById('startYear').value ? 
+                        parseInt(document.getElementById('startYear').value) : null;
+      const endYear = document.getElementById('endYear').value ? 
+                      parseInt(document.getElementById('endYear').value) : null;
+      
+      google.script.run
+        .withSuccessHandler(function(result) {
+          document.getElementById('result').innerHTML = 
+            '<div style="color: green; margin-top: 10px;">' + result + '</div>';
+        })
+        .withFailureHandler(function(error) {
+          document.getElementById('result').innerHTML = 
+            '<div style="color: red; margin-top: 10px;">Error: ' + error.message + '</div>';
+        })
+        .getMacroSnapshotToSheet(countries, metrics, startYear, endYear);
+    });
+  </script>
+</body>
+</html>
+

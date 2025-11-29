@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 10px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #357ae8;
+    }
+    .info {
+      font-size: 12px;
+      color: #666;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h3>Settings</h3>
+  <p>Configure the FinanceToolkit API endpoint.</p>
+  <p style="font-size: 12px; color: #666;">
+    Update API_BASE_URL in Code.gs with your Cloud Run URL.
+  </p>
+  <div class="info">
+    Current API URL is set in Code.gs file.
+    <br><br>
+    For local testing: http://localhost:8000
+    <br>
+    For production: https://your-service-name-xxxxx-uc.a.run.app
+  </div>
+</body>
+</html>
+

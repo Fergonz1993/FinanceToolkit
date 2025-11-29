@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 10px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #357ae8;
+    }
+    .info {
+      font-size: 12px;
+      color: #666;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h3>Portfolio Analysis</h3>
+  <p>Upload a CSV or Excel file with your portfolio positions.</p>
+  <p style="font-size: 12px; color: #666;">
+    The file should have columns: Date, Ticker, Quantity, Price (or Value)
+  </p>
+  <form id="portfolioForm">
+    <div class="form-group">
+      <label for="benchmark">Benchmark Ticker:</label>
+      <input type="text" id="benchmark" value="SPY" placeholder="e.g., SPY">
+    </div>
+    <div class="form-group">
+      <label for="startDate">Start Date (optional):</label>
+      <input type="date" id="startDate">
+    </div>
+    <div class="form-group">
+      <label>
+        <input type="checkbox" id="quarterly"> Quarterly data
+      </label>
+    </div>
+    <button type="button" onclick="alert('Portfolio analysis via file upload requires the API endpoint. Use the API directly or prepare your portfolio data in the sheet.')">
+      Analyze Portfolio
+    </button>
+  </form>
+  
+  <div id="result" style="margin-top: 15px;"></div>
+</body>
+</html>
+
