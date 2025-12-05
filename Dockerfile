@@ -5,27 +5,34 @@ FROM python:3.11-slim
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies (curl for healthcheck)
 RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better caching
-COPY api/requirements.txt /app/api/requirements.txt
+COPY pyproject.toml /app/pyproject.toml
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r /app/api/requirements.txt
+RUN pip install --no-cache-dir -e ".[infra]"
 
-# Copy the entire project (needed for my_finance_layer and config)
+# Copy the entire project
 COPY . /app/
 
-# Set Python path to include project root
+# Set environment variables
 ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+ENV ENVIRONMENT=production
 
-# Expose port
+# Expose port (Cloud Run uses 8080 by default)
 EXPOSE 8080
 
-# Run the API
-CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8080"]
+# Health check for container orchestrators
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8080/health || exit 1
+
+# Run with gunicorn + uvicorn worker for better concurrency
+CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "-w", "2", "-b", "0.0.0.0:8080", "infrastructure.api:app"]
 
